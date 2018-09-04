@@ -1,0 +1,13 @@
+2
+0
+CSI 388
+A wonderful room where you have the best time of your whole week.
+-1,-1,-1,1,-1,-1
+2
+chair,Something to sit in.
+computer,Your best friend in the whole world.
+1
+Hallway
+A long corridor.
+-1,-1,0,-1,-1,-1
+0
