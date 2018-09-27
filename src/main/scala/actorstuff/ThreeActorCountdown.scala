@@ -8,12 +8,12 @@ import akka.actor.ActorRef
 object ThreeActorCountdown extends App {
   class TACActor extends Actor {
     def receive = {
-      case CountDown(n, next) =>
+      case CountDown(n, next, nextnext) =>
         if(n >= 1) {
           println(self.path.name+" saying "+n)
-          next ! CountDown(n-1, self)
+          next ! CountDown(n-1, nextnext, self)
         } else {
-          
+          system.terminate()
         }
       case m => println("Unhandled message in TACActor "+m)
     }
@@ -28,7 +28,7 @@ object ThreeActorCountdown extends App {
   val a2 = system.actorOf(Props(new TACActor), "Counter2")
   val a3 = system.actorOf(Props(new TACActor), "Counter3")
   
-  a1 ! CountDown(10, a2)
+  a1 ! CountDown(1000, a2, a3)
   
-  case class CountDown(n: Int, next: ActorRef)
+  case class CountDown(n: Int, next: ActorRef, nextnext: ActorRef)
 }

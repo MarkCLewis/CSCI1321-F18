@@ -13,6 +13,8 @@ class ArrayQueue[A: ClassTag] extends MyQueue[A] {
       for(i <- 0 until data.length-1) {
         tmp(i) = data((front+i)%data.length)
       }
+      front = 0
+      back = data.length-1
       data = tmp
     }
     data(back) = a

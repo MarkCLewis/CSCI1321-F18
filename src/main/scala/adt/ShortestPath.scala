@@ -20,7 +20,7 @@ object ShortestPath extends App {
     queue.enqueue((sx, sy, 0))
     while(!queue.isEmpty) {
       val (x, y, steps) = queue.dequeue()
-      if(x == ex & y == ey) return steps
+      if(x == ex && y == ey) return steps
       for((dx, dy) <- offsets) {
         val nx = x+dx
         val ny = y+dy
