@@ -5,6 +5,9 @@ import scalafx.scene.Scene
 import scalafx.scene.image.WritableImage
 import javafx.scene.image.ImageView
 import scalafx.scene.paint.Color
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+import scalafx.application.Platform
 
 class JuliaSet(c: Complex) {
   private var xmin = -1.5
@@ -34,16 +37,24 @@ class JuliaSet(c: Complex) {
   def drawJulia(img: WritableImage): Unit = {
     val writer = img.pixelWriter
     val start = System.nanoTime()
-    for (j <- 0 until img.height().toInt) {
+    val colors = for (j <- 0 until img.height().toInt) yield Future {
       val y = pixelToY(j, img)
-      for (i <- 0 until img.width().toInt) {
+      for (i <- 0 until img.width().toInt) yield {
         val x = pixelToX(i, img)
         val cnt = juliaCount(new Complex(x, y))
-        val color = colorFromCount(cnt)
-        writer.setColor(i, j, color)
+        (i, j, colorFromCount(cnt))
       }
     }
-    println("Took " + ((System.nanoTime() - start) * 1e-9) + " seconds.")
+    val writers = for(f <- colors) yield {
+      f.map { row =>
+        Platform.runLater(
+          for((i, j, color) <- row) writer.setColor(i, j, color)
+        )
+      }
+    }
+    Future.sequence(writers).foreach( _ =>
+      println("Took " + ((System.nanoTime() - start) * 1e-9) + " seconds.")
+    )
   }
 
   val stage = new scalafx.stage.Stage {

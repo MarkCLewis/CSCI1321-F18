@@ -37,7 +37,7 @@ object Mandelbrot extends JFXApp {
   def drawMandelbrot(img: WritableImage): Unit = {
     val writer = img.pixelWriter
     val start = System.nanoTime()
-    for (j <- 0 until img.height().toInt) {
+    for (j <- (0 until img.height().toInt).par) {
       val y = pixelToY(j, img)
       for (i <- 0 until img.width().toInt) {
         val x = pixelToX(i, img)
