@@ -1,19 +1,29 @@
 package mud
 
 import scala.io.Source
+import akka.actor.Actor
+import akka.actor.ActorRef
 
 class Room(
     keyword: String,
     name: String,
     desc: String,
-    exits: Array[String],
+    exitKeys: Array[String],
     items: List[Item]
-    ) {
+    ) extends Actor {
+  private var exits: Array[Option[ActorRef]] = null
   
-  def getExit(dir: Int): Option[Room] = {
-//    if(exits(dir) == None) None else
-//      Some(Room.rooms(exits(dir).get))
-    Room.rooms.get(exits(dir))
+  import Room._
+  def receive = {
+    case GetExit(dir) => 
+      //sender ! Player.TakeExit(getExit(dir))
+    case LinkExits(rooms) => 
+      exits = exitKeys.map(key => rooms.get(key))
+    case m => println("Unhandled message in Room: "+m)
+  }
+  
+  def getExit(dir: Int): Option[ActorRef] = {
+    exits(dir)
   }
 
   override def toString(): String = {
@@ -22,26 +32,12 @@ class Room(
 }
 
 object Room {
-  val rooms = readRooms()
+  // Messages sent by Player
+  case class GetExit(dir: Int)
+  case object PrintDescription // Doesn't print here. Tells player to print.
+  case class GetItem(itemName: String)
+  case class DropItem(item: Item)
   
-  def readRooms(): Map[String,Room] = {
-    val source = Source.fromFile("map.txt")
-    val lines = source.getLines()
-    val rooms = Array.fill(lines.next().trim.toInt)(readRoom(lines))
-    source.close()
-    rooms.toMap
-  }
-  
-  def readRoom(lines: Iterator[String]): (String,Room) = {
-    val keyword = lines.next()
-    val name = lines.next()
-    val desc = lines.next()
-    val exits = lines.next().split(",")
-    val items = List.fill(lines.next().trim.toInt){
-      val Array(name, desc) = lines.next().split(",", 2)
-      Item(name.trim, desc.trim)
-    }
-    keyword -> new Room(keyword, name, desc, exits, items)
-  }
-  
+  // Messages sent by RoomManager
+  case class LinkExits(rooms: Map[String, ActorRef])
 }
