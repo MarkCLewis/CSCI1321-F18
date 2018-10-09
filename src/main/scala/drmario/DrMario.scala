@@ -25,6 +25,10 @@ object DrMario extends JFXApp {
           grid.leftPressed()
         case KeyCode.Right =>
           grid.rightPressed()
+        case KeyCode.Down =>
+          grid.downPressed()
+        case KeyCode.Up =>
+          grid.upPressed()
         case _ =>
       }
     }
@@ -34,6 +38,8 @@ object DrMario extends JFXApp {
           grid.leftReleased()
         case KeyCode.Right =>
           grid.rightReleased()
+        case KeyCode.Down =>
+          grid.downReleased()
         case _ =>
       }
     }

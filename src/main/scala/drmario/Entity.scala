@@ -1,6 +1,6 @@
 package drmario
 
 trait Entity {
-  def isSupported(): Boolean
   def blocks: List[Block]
+  def removeAt(pos: List[(Int, Int)]): Option[Entity]
 }

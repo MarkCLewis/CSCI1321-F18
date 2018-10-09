@@ -8,5 +8,5 @@ class Virus(
   
   def blocks: List[Block] = List(this)
   
-  def isSupported(): Boolean = true
+  def removeAt(pos: List[(Int, Int)]): Option[Entity] = None
 }

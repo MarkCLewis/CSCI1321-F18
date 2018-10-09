@@ -1,7 +1,8 @@
 package drmario
 
 class PillPiece(private var _x: Int, private var _y: Int) extends Block {
-  def color: MarioColor.Value = MarioColor.Red
+  val _color = MarioColor.random()
+  def color: MarioColor.Value = _color
   
   def x: Int = _x
   
