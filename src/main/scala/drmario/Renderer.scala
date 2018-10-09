@@ -7,7 +7,7 @@ import scalafx.scene.paint.Color
 class Renderer(gc: GraphicsContext) {
   val blockSize = 50
 
-  def render(grid: Grid): Unit = {
+  def render(grid: PassableGrid): Unit = {
     gc.fill = Color.Black
     gc.fillRect(0, 0, gc.canvas.width(), gc.canvas.height())
 

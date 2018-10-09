@@ -2,14 +2,19 @@ package drmario
 
 import scalafx.Includes._
 import scalafx.application.JFXApp
-import scalafx.scene.Scene
 import scalafx.scene.canvas.Canvas
+import scalafx.scene.Scene
 import scalafx.animation.AnimationTimer
-import scalafx.scene.input.KeyEvent
 import scalafx.scene.input.KeyCode
+import scalafx.scene.input.KeyEvent
+import java.rmi.server.UnicastRemoteObject
 
-object DrMario extends JFXApp {
-  val grid = new Grid
+@remote trait RemoteClient {
+  
+}
+
+object DrMarioClient extends UnicastRemoteObject with JFXApp with RemoteClient {
+  val grid = ???
   val canvas = new Canvas(400, 800)
   val gc = canvas.graphicsContext2D
   val renderer = new Renderer(gc)
@@ -44,14 +49,5 @@ object DrMario extends JFXApp {
       }
     }
     canvas.requestFocus()
-
-    var lastTime = 0L
-    val timer = AnimationTimer { time =>
-      val delay = (time - lastTime) * 1e-9
-      if(lastTime != 0L) grid.update(delay)
-      lastTime = time
-      renderer.render(grid.buildPassable)
-    }
-    timer.start()
   }
 }

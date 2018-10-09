@@ -36,6 +36,8 @@ class Grid {
   def blocks: List[Block] = {
     currentPill.blocks ++ entities.flatMap(_.blocks)
   }
+  
+  def buildPassable() = PassableGrid(blocks)
 
   private def currentPieceFalls(): Unit = {
     val fell = movePill(0, 1)

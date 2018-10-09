@@ -8,10 +8,13 @@ import java.io.InputStreamReader
 import java.io.BufferedReader
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
 object ActorChat extends App {
   val system = ActorSystem("Chat")
   val chatManager = system.actorOf(Props[ChatManager])
+  
+  system.scheduler.schedule(1.seconds, 0.1.seconds, chatManager, ChatManager.CheckAllInput)
 
   val ss = new ServerSocket(4040)
   while (true) {
