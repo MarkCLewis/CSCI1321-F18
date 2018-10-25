@@ -7,6 +7,7 @@ import java.net.Socket
 
 class Chatter(name: String, sock: Socket, ps: PrintStream, br: BufferedReader) extends Actor {
   import Chatter._
+  
   def receive = {
     case CheckInput =>
       if(br.ready()) {

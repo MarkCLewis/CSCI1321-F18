@@ -8,19 +8,29 @@ import scalafx.animation.AnimationTimer
 import scalafx.scene.input.KeyCode
 import scalafx.scene.input.KeyEvent
 import java.rmi.server.UnicastRemoteObject
+import scalafx.application.Platform
+import java.rmi.Naming
 
 @remote trait RemoteClient {
-  
+  def drawGrid(grids: Seq[PassableGrid]): Unit
 }
 
 object DrMarioClient extends UnicastRemoteObject with JFXApp with RemoteClient {
-  val grid = ???
-  val canvas = new Canvas(400, 800)
+  val server = Naming.lookup("rmi://localhost/DrMarioServer") match {
+    case s:RemoteServer => s
+  }
+  val grid: RemoteGrid = server.connect(this)
+  val canvas = new Canvas(1000, 800)
   val gc = canvas.graphicsContext2D
   val renderer = new Renderer(gc)
+  
+  def drawGrid(grids: Seq[PassableGrid]): Unit = {
+    Platform.runLater(renderer.render(grids))
+  }
+  
   stage = new JFXApp.PrimaryStage {
     title = "Dr. Mario"
-    scene = new Scene(400, 800) { // 8 by 16 grid
+    scene = new Scene(1000, 800) { // 8 by 16 grid
       content = canvas
     }
     

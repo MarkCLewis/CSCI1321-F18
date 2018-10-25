@@ -7,12 +7,12 @@ import scalafx.scene.paint.Color
 class Renderer(gc: GraphicsContext) {
   val blockSize = 50
 
-  def render(grid: PassableGrid): Unit = {
+  def render(grids: Seq[PassableGrid]): Unit = {
     gc.fill = Color.Black
     gc.fillRect(0, 0, gc.canvas.width(), gc.canvas.height())
 
     // Draw Blocks
-    for (block <- grid.blocks) {
+    for ((grid, i) <- grids.zipWithIndex; block <- grid.blocks) {
       block.color match {
         case MarioColor.Blue => gc.fill = Color.Blue
         case MarioColor.Red => gc.fill = Color.Red
@@ -20,9 +20,9 @@ class Renderer(gc: GraphicsContext) {
       }
       block match {
         case v: Virus =>
-          gc.fillOval(v.x * blockSize, v.y * blockSize, blockSize, blockSize)
+          gc.fillOval(i * 600 + v.x * blockSize, v.y * blockSize, blockSize, blockSize)
         case pp: PillPiece =>
-          gc.fillRect(pp.x * blockSize, pp.y * blockSize, blockSize, blockSize)
+          gc.fillRect(i * 600 + pp.x * blockSize, pp.y * blockSize, blockSize, blockSize)
       }
     }
   }

@@ -1,6 +1,18 @@
 package drmario
 
-class Grid {
+import java.rmi.server.UnicastRemoteObject
+
+@remote trait RemoteGrid {
+  def leftPressed()
+  def leftReleased()
+  def rightPressed()
+  def rightReleased()
+  def upPressed()
+  def downPressed()
+  def downReleased()
+}
+
+class Grid extends UnicastRemoteObject with RemoteGrid {
   private val width = 8
   private val height = 16
   private var entities: List[Entity] = {

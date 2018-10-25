@@ -50,7 +50,7 @@ object DrMario extends JFXApp {
       val delay = (time - lastTime) * 1e-9
       if(lastTime != 0L) grid.update(delay)
       lastTime = time
-      renderer.render(grid.buildPassable)
+//      renderer.render(grid.buildPassable)
     }
     timer.start()
   }
