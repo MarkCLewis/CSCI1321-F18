@@ -88,5 +88,5 @@ class SLLBuffer[A] extends Buffer[A] {
 }
 
 object SLLBuffer {
-  class Node[A](var data: A, var next: Node[A])
+  private class Node[A](var data: A, var next: Node[A])
 }
