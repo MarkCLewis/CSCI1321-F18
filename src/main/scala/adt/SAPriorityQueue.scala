@@ -7,12 +7,8 @@ class SAPriorityQueue[A: ClassTag](higherP: (A, A) => Boolean) extends MyPriorit
   private var numElems = 0
 
   def dequeue(): A = {
-    val ret = arr(0)
-    for (i <- 1 to numElems) {
-      arr(i - 1) = arr(i)
-    }
-    numElems -= 1
-    ret
+	  numElems -= 1
+    arr(numElems)
   }
   def enqueue(a: A): Unit = {
     if (numElems + 1 > arr.size) {    
@@ -20,16 +16,13 @@ class SAPriorityQueue[A: ClassTag](higherP: (A, A) => Boolean) extends MyPriorit
       for(i <- 0 until numElems) copy(i) = arr(i)
       arr = copy
     }
-    var index = -1
-    for (i <- 0 until numElems) {
-      if (higherP(arr(i), a) && higherP(a, arr(i + 1))) index = i + 1
+    var i = numElems-1
+    while(i >= 0 && higherP(arr(i), a)) {
+      arr(i+1) = arr(i)
+      i -= 1
     }
-    for(i <- numElems to index+1 by -1) {
-      arr(i) = arr(i-1)
-    }
-    arr(index) = a
+    arr(i+1) = a
     numElems += 1
-
   }
   def isEmpty: Boolean = numElems == 0
 
