@@ -4,9 +4,7 @@ object RandomStudent extends App {
 	val students = """
 Akins, Dillon
 Claessen, Dane
-Crusius, Kevin
 Flaherty, Danielle
-Hildebrandt, Chase
 Holt, Keaton
 Jackson, Marlee
 Johns, Delaney
