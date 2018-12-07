@@ -49,6 +49,26 @@ class BSTMap[K, V](lt: (K, K) => Boolean) extends mutable.Map[K, V] {
     }
     helper(root)
   }
+  
+  def numLeaves(): Int = {
+    def helper(n: Node[K, V]): Int = {
+      if(n == null) 0
+      else if(n.left == null && n.right == null) 1
+      else {
+        helper(n.left)+helper(n.right)
+      }
+    }
+    helper(root)
+  }
+
+  def recurSize(): Int = {
+    def helper(n: Node[K, V]): Int = {
+      if(n == null) 0 else {
+        helper(n.left)+helper(n.right)+1
+      }
+    }
+    helper(root)
+  }
 
   def iterator = new Iterator[(K, V)] {
     var stack: List[Node[K, V]] = Nil
